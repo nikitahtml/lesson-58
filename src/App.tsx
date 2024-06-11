@@ -1,35 +1,42 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useState } from 'react';
+import Modal from './components/Modal';
+import Alert from './components/Alert';
+import './App.css';
 
-function App() {
-  const [count, setCount] = useState(0)
+const App: React.FC = () => {
+    const [showModal, setShowModal] = useState(false);
+    const [showAlert, setShowAlert] = useState(true);
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    const handleModalClose = () => setShowModal(false);
+    const handleAlertDismiss = () => setShowAlert(false);
+
+    return (
+        <div className="App container">
+            <h1 className="my-4">Demo App</h1>
+
+            <button className="btn btn-primary" onClick={() => setShowModal(true)}>
+                Show Modal
+            </button>
+
+            {showAlert && (
+                <Alert type="warning" onDismiss={handleAlertDismiss}>
+                    This is a warning type alert
+                </Alert>
+            )}
+
+            <Modal
+                show={showModal}
+                onClose={handleModalClose}
+                title="Some kinda modal title"
+                buttons={[
+                    { type: 'primary', label: 'Continue', onClick: () => alert('clicked continue') },
+                    { type: 'danger', label: 'Close', onClick: handleModalClose },
+                ]}
+            >
+                <p>This is modal content</p>
+            </Modal>
+        </div>
+    );
 }
 
-export default App
+export default App;
